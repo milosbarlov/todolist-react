@@ -33,6 +33,7 @@ class DB {
     };
 
     __addTable = key =>{
+
         if(localStorage.getItem(key) === null){
             localStorage.setItem(key,JSON.stringify([]))
         }
