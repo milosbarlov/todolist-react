@@ -5,24 +5,42 @@ import DB from "../local-storage";
 
 export const  useTasks = selectedProject => {
   const [tasks, setTasks] = useState([]);
+  const [archivedTasks, setArchivedTasks] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const db = new DB('tasks');
-    let tasks = [];
+    let allTasks = [];
 
     if(!collectedTasksExist(selectedProject)){
-      tasks = db.getAll('id',selectedProject);
+      allTasks = db.getAll('project_id',selectedProject);
     }else{
       if(selectedProject === 'TODAY'){
-        tasks = db.getAll('date',moment().format('DD/MM/YYY'))
+        allTasks = db.getAll('date',moment().format('DD/MM/YYY'))
       }else if(selectedProject === 'INBOX' || selectedProject === 0){
-        tasks = db.getAll('date','')
+        allTasks = db.getAll('date','')
       }else if(selectedProject === 'NEXT_7'){
-
+        allTasks = db.getAll().filter(task => {
+          return task.date <= moment(task.date,'DD-MM-YYYY').diff(moment(),'days') && task.archived !== true
+        })
       }
     }
+    setTasks(allTasks);
+    setArchivedTasks(db.getAll().filter(task => task.archived === true));
 
-    setTasks(tasks);
+  },[selectedProject]);
 
-  },[selectedProject])
+  return { tasks,archivedTasks };
+};
+
+export const useProjects = ()=>{
+  const [projects,setProjects] = useState([]);
+  useEffect(()=>{
+    const db = new DB('projects');
+    const allProjects = db.getAll();
+    if(JSON.stringify(allProjects) !== JSON.stringify(projects)){
+      setProjects(allProjects);
+    }
+  },[projects]);
+
+  return {projects,setProjects}
 };
