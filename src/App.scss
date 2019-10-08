@@ -276,6 +276,7 @@ header {
     cursor: pointer;
 
     div:nth-child(1) {
+      /*
       padding: 5px 0;
       padding-left: 10px;
       padding-right: 15px;
@@ -286,6 +287,8 @@ header {
       -webkit-box-align: center;
       -ms-flex-align: center;
       align-items: center;
+      */
+
     }
 
     &-delete {
@@ -421,7 +424,7 @@ header {
 .project-delete-modal {
   position: relative;
 
-  &__inner {
+  .project-delete-modal__inner {
     @include box-overlay();
     z-index: 99;
     width: 200px;

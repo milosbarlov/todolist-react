@@ -1,3 +1,5 @@
+import {modelScenarios} from "../constants";
+const {CREATE,DELETE,UPDATE} = modelScenarios;
 
 export default class DB {
     constructor(table = 'projects'){
@@ -6,6 +8,7 @@ export default class DB {
     }
 
     __table = '';
+    __scenario = '';
 
     getAll = (field = null,value = null) => {
         let response = [];
@@ -34,6 +37,7 @@ export default class DB {
     };
 
     update = (id,data) => {
+        this.__scenario = UPDATE;
         const task = this.getOne('id',id);
         if(task){
             const updatedTask = {...task,...data};
@@ -42,10 +46,14 @@ export default class DB {
     };
 
     create = (data) => {
-        this.__updateLocalStorage(null,{...data,id:this.__nextId()});
+        this.__scenario = CREATE;
+        const newData = {...data,id:this.__nextId()};
+        this.__updateLocalStorage(null,newData);
+        return newData;
     };
 
     delete = (id) => {
+        this.__scenario = DELETE;
         const models = this.getAll().filter(function(item) {
             return item.id !== id;
         });
@@ -55,14 +63,18 @@ export default class DB {
     }
 
     //***********************PRIVATE FUNCTION ****************************************//
-    __updateLocalStorage = (id = null,newData = null) => {
+    __updateLocalStorage = (id = null,newData) => {
         let data = this.getAll();
-        if(id){
-            data[data.findIndex(el => el.id === newData.id)] = newData;
-        }else{
-            data.push(newData);
+        switch (this.__scenario) {
+            case CREATE:
+                data.push(newData);
+                break;
+            case UPDATE:
+                data[data.findIndex(el => el.id === newData.id)] = newData;
+                break;
+            case DELETE:
+                data = newData;
         }
-
         localStorage.setItem(this.__table,JSON.stringify(data));
     };
 

@@ -15,12 +15,12 @@ export const  useTasks = selectedProject => {
       allTasks = db.getAll('project_id',selectedProject);
     }else{
       if(selectedProject === 'TODAY'){
-        allTasks = db.getAll('date',moment().format('DD/MM/YYY'))
+        allTasks = db.getAll('date',moment().format('DD-MM-YYYY'))
       }else if(selectedProject === 'INBOX' || selectedProject === 0){
-        allTasks = db.getAll('date','')
+        allTasks = db.getAll();
       }else if(selectedProject === 'NEXT_7'){
         allTasks = db.getAll().filter(task => {
-          return task.date <= moment(task.date,'DD-MM-YYYY').diff(moment(),'days') && task.archived !== true
+          return task.date <= moment(Date.now() + 7 * 24 * 3600 * 1000).format('DD-MM-YYYY') && task.archived !== true
         })
       }
     }
