@@ -5,14 +5,14 @@ import DB from "../local-storage";
 
 export const IndividualProject = ({project}) => {
       const [showConfirm , setShowConfirm] = useState(false);
-      const {setSelectedProject} = useSelectedProjectsValue();
+      const { selectedProject, setSelectedProject } = useSelectedProjectsValue();
       const {projects,setProjects} = useProjectValue();
 
       const deleteProject = id =>{
-            const db = new DB();
+            setSelectedProject('INBOX');
+            const db = new DB('projects');
             let models = db.delete(id);
             setProjects(models);
-            setSelectedProject('INBOX');
       };
 
       return (

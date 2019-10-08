@@ -20,16 +20,21 @@ export const  useTasks = selectedProject => {
         allTasks = db.getAll();
       }else if(selectedProject === 'NEXT_7'){
         allTasks = db.getAll().filter(task => {
-          return task.date <= moment(Date.now() + 7 * 24 * 3600 * 1000).format('DD-MM-YYYY') && task.archived !== true
-        })
+          return task.date <= moment(Date.now()).add(7,'days').format('DD-MM-YYYY')})
       }
     }
-    setTasks(allTasks);
-    setArchivedTasks(db.getAll().filter(task => task.archived === true));
 
-  },[selectedProject]);
+    const filteredTask = allTasks.filter(task=>task.archived !== true);
+    const archivedTask = db.getAll().filter(task => task.archived === true);
 
-  return { tasks,archivedTasks };
+    if(tasks.length !== filteredTask.length){
+        setTasks(filteredTask);
+        setArchivedTasks(archivedTask);
+    }
+
+  },[selectedProject,tasks]);
+
+  return { tasks, archivedTasks, setTasks};
 };
 
 export const useProjects = ()=>{

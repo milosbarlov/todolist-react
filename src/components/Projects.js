@@ -16,6 +16,7 @@ export const Projects = ({ activeValue = null })=>{
                 className={
                     active === project.id ? 'active sidebar__project' : 'sidebar__project'
                 }
+
                 onClick={()=>{
                     setActive(project.id);
                     setSelectedProject(project.id);

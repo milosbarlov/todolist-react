@@ -2,11 +2,10 @@ import React from 'react';
 import {Checkbox} from "./Checkbox";
 import { useTasks} from "../hooks";
 import { useState, useEffect } from 'react';
-import DB from "../local-storage/index"
-import moment from "moment";
 import {collectedTasks} from "../constants";
 import { getTitle, getCollectedTitle, collectedTasksExist} from "../helpers";
 import { useSelectedProjectsValue, useProjectValue } from "../context";
+import { AddTask} from "./AddTask";
 /*
 let db = new DB('projects');
 db.create({name:"project 1"});
@@ -26,14 +25,17 @@ db.create({archived: false,date:moment('21.10.2019').format("DD.MM.YYYY"),projec
 
 
 export const Tasks = () => {
-
     const {selectedProject} = useSelectedProjectsValue();
     const { projects } = useProjectValue();
     const { tasks } = useTasks(selectedProject);
     let projectName = '';
 
+
     if(projects && selectedProject && !collectedTasksExist(selectedProject)){
-        projectName = getTitle(projects,selectedProject).name
+        const title = getTitle(projects,selectedProject);
+        if(title){
+            projectName = title.name
+        }
     }
 
     if(selectedProject && collectedTasksExist(selectedProject)){
@@ -41,7 +43,7 @@ export const Tasks = () => {
     }
 
     useEffect(()=>{
-        document.title = `${projectName}: Todoist`;
+        document.title = `${projectName}: TodoList`;
     });
 
     return (
@@ -56,6 +58,7 @@ export const Tasks = () => {
                     </li>
                 ))}
             </ul>
+            <AddTask/>
         </div>
     );
 };

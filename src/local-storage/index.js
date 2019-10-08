@@ -42,6 +42,7 @@ export default class DB {
         if(task){
             const updatedTask = {...task,...data};
             this.__updateLocalStorage(id,updatedTask);
+            return updatedTask;
         }
     };
 
@@ -62,7 +63,7 @@ export default class DB {
         return models;
     }
 
-    //***********************PRIVATE FUNCTION ****************************************//
+    //***********************PRIVATE FUNCTIONS ****************************************//
     __updateLocalStorage = (id = null,newData) => {
         let data = this.getAll();
         switch (this.__scenario) {
