@@ -3,20 +3,12 @@ import DB from '../local-storage/index';
 import {useTasks} from "../hooks";
 import {useSelectedProjectsValue} from "../context";
 
-export const Checkbox = ({id}) => {
-    const { selectedProject } = useSelectedProjectsValue();
-    const db = new DB('tasks');
-    const {setTasks} = useTasks(selectedProject);
-    const archivedTask = ()=> {
-        db.update(id, {archived: true});
-        setTasks([]);
-    };
-
+export const Checkbox = ({id,archivedTask}) => {
     return(
         <div
             className="checkbox-holder"
             data-testid="checkbox-action"
-            onClick={()=>archivedTask()}
+            onClick={()=>archivedTask(id)}
         >
             <span className="checkbox"/>
         </div>

@@ -6,6 +6,7 @@ import {collectedTasks} from "../constants";
 import { getTitle, getCollectedTitle, collectedTasksExist} from "../helpers";
 import { useSelectedProjectsValue, useProjectValue } from "../context";
 import { AddTask} from "./AddTask";
+import DB from '../local-storage/index';
 /*
 let db = new DB('projects');
 db.create({name:"project 1"});
@@ -27,8 +28,14 @@ db.create({archived: false,date:moment('21.10.2019').format("DD.MM.YYYY"),projec
 export const Tasks = () => {
     const {selectedProject} = useSelectedProjectsValue();
     const { projects } = useProjectValue();
-    const { tasks } = useTasks(selectedProject);
+    const { tasks, setTasks } = useTasks(selectedProject);
     let projectName = '';
+
+    const archivedTask = (id)=> {
+        let db = new DB('tasks');
+        db.update(id, {archived: true});
+        setTasks([]);
+    };
 
 
     if(projects && selectedProject && !collectedTasksExist(selectedProject)){
@@ -53,7 +60,7 @@ export const Tasks = () => {
             <ul className="tasks__list">
                 {tasks.map(task=>(
                     <li key={task.id}>
-                        <Checkbox id={task.id} />
+                        <Checkbox id={task.id}  archivedTask={archivedTask}/>
                         <span>{task.task}</span>
                     </li>
                 ))}

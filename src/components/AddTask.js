@@ -33,7 +33,7 @@ export const AddTask = ({
         }
 
         if(task && project_id){
-            db.create({
+             db.create({
                 archived: false,
                 project_id,
                 task,
@@ -43,7 +43,10 @@ export const AddTask = ({
             setProject('');
             setShowMain('');
             setShowProjectOverlay(false);
+            return true;
         }
+
+        return false;
     };
 
     return (
