@@ -10,7 +10,7 @@ export const AddTask = ({
     showAddTaskMain = true,
     showShouldMain = false,
     showQuickAddTask,
-    setShowQuickAddTask
+    setShowQuickAddTask,
 }) => {
     const [task,setTask] = useState('');
     const [taskDate,setTaskDate] = useState('');

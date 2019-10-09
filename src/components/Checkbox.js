@@ -1,7 +1,4 @@
 import React from 'react';
-import DB from '../local-storage/index';
-import {useTasks} from "../hooks";
-import {useSelectedProjectsValue} from "../context";
 
 export const Checkbox = ({id,archivedTask}) => {
     return(

@@ -12,10 +12,6 @@ let db = new DB('projects');
 db.create({name:"project 1"});
 db.create({name:"project 2"});
 db.create({name:"project 3"});
-
-
-
-
 let db = new DB('tasks');
 db.create({archived: false,date:moment().format("DD.MM.YYYY"),project_id:3,task:"task1 project 3"});
 db.create({archived: false,date:moment('15.10.2019').format("DD.MM.YYYY"),project_id:3,task:"task2 project 3"});
@@ -23,20 +19,18 @@ db.create({archived: false,date:moment('21.10.2019').format("DD.MM.YYYY"),projec
 
  */
 
-
-
 export const Tasks = () => {
     const {selectedProject} = useSelectedProjectsValue();
     const { projects } = useProjectValue();
     const { tasks, setTasks } = useTasks(selectedProject);
     let projectName = '';
+    let db = new DB('tasks');
 
     const archivedTask = (id)=> {
         let db = new DB('tasks');
         db.update(id, {archived: true});
         setTasks([]);
     };
-
 
     if(projects && selectedProject && !collectedTasksExist(selectedProject)){
         const title = getTitle(projects,selectedProject);
